@@ -1,0 +1,12 @@
+# /node_modules/* and /bower_components/* ignored by default
+
+/packages
+/lib/client/plugins
+/lib/client/userprofile
+/main/crm/client/userprofile
+/main/login/client
+/main/messages/client/stylesheets
+/lib/client/stylesheets
+/public
+package.json
+circle.yml
