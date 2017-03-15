@@ -15,7 +15,7 @@ const Mocks = {
 			company: () => casual.company_name,
 			// links: () => new MockList( 7, () => Link ),
 		}),
-		Link: () => ({
+		Stories: () => ({
 			id: () => casual.uuid,
 			title: () => casual.catch_phrase,
 			url: () => casual.url,

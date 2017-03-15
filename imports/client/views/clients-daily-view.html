@@ -1,0 +1,65 @@
+<dom-module id='clients-daily-view'>
+	<template>
+		<style include='ink-variables ink-reset ink-flex-grid ink-colors ink-typography ink-layout-helpers'></style>
+		<style>
+			:host {
+				@apply --mix-absolute-view;
+				@apply --layout-vertical;
+				@apply --flx-ctr;
+			}
+
+			ink-hero1 {
+				color: white;
+			}
+
+			div {
+				@apply --layout-horizontal;
+			}
+
+		</style>
+		<ink-head1 ink-txt-c mt150>Hi [[firstName]], <br />are you meeting a client today?</ink-head1>
+
+		<div mt50>
+			<icon-button icon='/src/assets/icon_sad.png' label='NOT TODAY'></icon-button>
+			<icon-button icon='/src/assets/icon_happy.png' label='I HAVE A MEETING'></icon-button>
+		</div>
+	</template>
+	<script>
+			// const baseUrl = 'node_modules/';
+			// Polymer.Utils.importHref(`${baseUrl}@startup-boilerplate/inkling/dist/inkling.html`);
+			// Polymer.Utils.importHref(`src/components/icon-button/icon-button.html`);
+
+			// import '@polymer/polymer/polymer-element.html';
+			// import '@startup-boilerplate/inkling/dist/inkling.html';
+			// import '../components/icon-button/icon-button.html';
+
+			System.import('@polymer/polymer/polymer-element.html');
+			System.import('@startup-boilerplate/inkling/dist/inkling.html');
+			System.import('../components/icon-button/icon-button.html');
+
+			// require.ensure([], function(require) {
+			//   require('@polymer/polymer/polymer-element.html');
+			//   require('@startup-boilerplate/inkling/dist/inkling.html');
+			//   require('../components/icon-button/icon-button.html');
+			//
+			// }, 'clients-daily-components');
+
+
+			class ClientsDailyView extends Polymer.Element {
+
+				static get is() { return 'clients-daily-view'; }
+				connectedCallback() {
+					super.connectedCallback();
+				}
+
+				load() {
+
+					// import("@polymer/polymer/polymer-element.html").then(module => {
+					//   console.log('done');
+					// });
+				}
+			}
+
+			customElements.define(ClientsDailyView.is, ClientsDailyView);
+	</script>
+</dom-module>

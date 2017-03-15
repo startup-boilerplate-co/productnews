@@ -18,11 +18,11 @@ type User {
   name: String
 	occupation: String
 	company: String
-  links: [Link]
+  stories: [Stories]
 }
 
 
-type Link {
+type Stories {
 	id: String
 	title: String
 	url: String
@@ -43,7 +43,7 @@ type Comment {
 type Query {
   getFortuneCookie: String
   getRetroCards: RetroCards
-	getLink: Link
+	getStories: [Stories]
 	getComment: Comment
 	getUser: User
 }

@@ -1,0 +1,35 @@
+<dom-module id='verify-email-view'>
+
+  <template>
+    <app-location route={{route}}></app-location>
+    <app-route
+      pattern='/:page/:token'
+      route={{route}}
+      data={{data}}>
+    </app-route>
+
+  </template>
+</dom-module>
+
+<script>
+  require('@polymer/polymer/polymer.html');
+  require('@polymer/app-route/app-route.html');
+  require('@polymer/app-route/app-location.html');
+
+  Polymer({
+    is: 'verify-email-view',
+    attached: function() {
+      this._verifyEmail();
+    },
+    _verifyEmail: function() {
+      console.log(this.data.token);
+      Accounts.verifyEmail(this.data.token, ( error ) =>{
+        if ( error ) {
+          console.log( error.reason, 'danger' );
+        } else {
+          console.log( 'Email verified! Thanks!', 'success' );
+        }
+      });
+    }
+  });
+</script>

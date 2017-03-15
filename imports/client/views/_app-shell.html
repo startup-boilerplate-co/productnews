@@ -1,0 +1,257 @@
+<dom-module id='app-shell'>
+
+  <template>
+    <style>
+
+    </style>
+
+    <app-location route={{route}} path={{path}}></app-location>
+    <app-route
+      pattern="/:page"
+      route={{route}}
+      data={{data}}
+      tail={{tail}}>
+    </app-route>
+
+    <iron-lazy-pages attr-for-selected='data-route' selected=[[path]]>
+      <template is='iron-lazy-page' data-route='/'>
+
+      </template>
+
+      <template is='iron-lazy-page' data-route='/verify-email'>
+      </template>
+
+      <template is='iron-lazy-page' data-route='/login'>
+        <login-view></login-view>
+      </template>
+
+      <template is='iron-lazy-page' data-route='/signup'>
+        <signup-view></signup-view>
+      </template>
+
+      <template is='iron-lazy-page' data-route='/clients-daily'>
+        <clients-daily-view first-name=[[firstName]]></clients-daily-view>
+      </template>
+
+      <template is='iron-lazy-page' data-route='/clients-monthly'>
+        <clients-monthly-view first-name=[[firstName]]></clients-monthly-view>
+      </template>
+
+      <template is='iron-lazy-page' data-route='/welcome'>
+        <welcome-view></welcome-view>
+      </template>
+
+    </iron-lazy-pages>
+
+		{{hello}}
+
+  </template>
+</dom-module>
+
+<script>
+	console.log('rofl');
+
+	import gql from 'graphql-tag';
+	import '@polymer/polymer/polymer.html';
+
+	import '@polymer/app-route/app-route.html';
+	import '@polymer/app-route/app-location.html';
+	// import '@polymer/iron-lazy-pages/iron-lazy-pages.html';
+
+
+
+	Polymer({
+	  is: 'app-shell',
+		behaviors:[PolymerApolloBehavior],
+	  observers: [
+	    '_loadViewDependency(data)'
+	  ],
+	  listeners: {
+	    'route-selected': 'changeRoute'
+	  },
+		properties : {
+		    // Initialize your apollo data
+		    hello: String,
+		},
+		apollo: {
+			// Simple query that will update the 'hello' polymer property
+			hello: gql`{getStories}`,
+		},
+	  attached: function() {
+	  },
+	  changeRoute: function(e) {
+	    // tells route path where to go
+	    this.path = e.detail.path;
+
+	    // this updates intercom to load new messages, etc.
+	    // window.Intercom('update');
+	  },
+	  _loadViewDependency: function(path) {
+	    // require('./welcome-view.html');
+	    // require('./clients-daily-view.html');
+	    // require('./clients-monthly-view.html');
+
+
+	    // console.log(path);
+	    // console.log(`/imports/client/views/${path.page}-view.html`);
+	    // path.page === '' ? require(`/imports/client/views/welcome-view.html`) : require(`/imports/client/views/${path.page}-view.html`);
+	  }
+	});
+</script>
+
+
+
+
+<!-- <dom-module id='app-shell'>
+	<template>
+
+		<style>
+			:host {
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+			}
+		</style>
+
+		<h1><a href='/clients-daily'>clients-daily</a></h1>
+		<h1><a href='/clients-monthly'>clients-monthly</a></h1>
+
+
+		<app-location route={{route}} path={{path}}></app-location>
+		<app-route
+			pattern='/:page'
+			route={{route}}
+			data={{data}}
+			tail={{tail}}>
+		</app-route>
+
+		<iron-lazy-pages attr-for-selected='data-route' selected=[[path]]>
+			<clients-daily-view
+				first-name=[[firstName]]
+				data-route='/yolo'>
+			</clients-daily-view>
+
+			<clients-daily-view
+				first-name=[[firstName]]
+				data-route='/clients-daily'>
+			</clients-daily-view>
+
+			<clients-monthly-view
+				first-name=[[firstName]]
+				data-route='/clients-monthly'>
+			</clients-monthly-view>
+		</iron-lazy-pages>
+
+	 <page-loader loaded=[[loaded]]></page-loader>
+
+	</template>
+
+	<script>
+		import gql from 'graphql-tag';
+		import '@polymer/polymer/polymer-element.html';
+		import '@polymer/app-route/app-route.html';
+		import '@polymer/app-route/app-location.html';
+		import '@polymer/iron-lazy-pages/iron-lazy-pages.html';
+		// import '../components/page-loader/page-loader.html';
+
+
+
+		console.log('blubb');
+		//
+		// //
+		// // {
+		// // 	behaviors:[PolymerApolloBehavior],
+		// //
+		// //
+		// //
+		//
+			class AppShell extends Polymer.Element {
+				// apollo: {
+				// 	// Query with parameters
+				// 	github: {
+				// 		query: gql`query github($username: String!) {
+				// 			github(username: $username){
+				// 				avatar_url,
+				// 				html_url,
+				// 				name,
+				// 				public_repos
+				// 			}
+				// 		}`,
+				// 		variables: {
+				// 			username: 'username'
+				// 		},
+				// 		error(error){
+				// 			this.set("github",{});
+				// 			this.set("error",error.message);
+				// 		},
+				// 		loadingKey:"loading"
+				// 		// Additional options here
+				// 	},
+				// }
+
+				static get is() { return 'app-shell'; }
+				static get properties() { return {
+					error:String,
+					username:{
+						type:String,
+						value:'aruntk',
+					},
+					loaded: {
+						type: Boolean,
+						value: false
+					}
+				}; }
+				static get observers() { return [
+					'_loadViewDependency(data)'
+				]; }
+
+				connectedCallback() {
+					super.connectedCallback();
+
+					// this.addEventListener('route-selected', this.changeRoute());
+
+					import('raven-js').then((Raven) => {
+						console.log(Raven);
+						Raven.config('https://f5c1f4f041544c9c9917d0a340cfec3f@sentry.io/141676').install();
+						// try {
+						// 	addAlert("Welcome guest!");
+						// }
+						// catch(err) {
+						// 	Raven.captureException(err);
+						// 	Raven.showReportDialog();
+						// }
+					});
+				}
+
+				changeRoute(e) {
+					// tells route path where to go
+					this.path = e.detail.path;
+				}
+
+				_loadViewDependency(path) {
+					switch (path.page) {
+						case 'clients-daily':
+							this.loaded = false;
+							import('./clients-daily-view.html').then(React => {
+								this.loaded = true;
+								console.log('imported');
+								console.log(React);
+							});
+							break;
+						case 'clients-monthly':
+							this.loaded = false;
+							import('./clients-monthly-view.html').then(React => {
+								this.loaded = true;
+								console.log('imported');
+								console.log(React);
+							});
+					}
+				}
+			}
+
+			customElements.define(AppShell.is, AppShell);
+		}
+	</script>
+</dom-module> -->

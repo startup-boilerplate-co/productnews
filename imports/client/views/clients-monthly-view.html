@@ -1,0 +1,77 @@
+<link rel='import' href='../../node_modules/@polymer/polymer/polymer-element.html'>
+<dom-module id='clients-monthly-view'>
+	<template>
+		<style include='ink-variables ink-reset ink-flex-grid ink-colors ink-typography ink-layout-helpers'></style>
+		<style>
+			:host {
+				@apply --mix-absolute-view;
+				@apply --layout-vertical;
+				background: var(--g95);
+			}
+
+			section {
+				@apply --flx-ctr;
+			}
+
+			ink-hero1 {
+				color: white;
+			}
+
+			div {
+				@apply --layout-horizontal;
+			}
+		</style>
+
+		<section hidden=[[!hadClients]]>
+			<ink-head1 ink-txt-c mt150>Hey Andreas, you didn't meet any clients last month.</ink-head1>
+			<floating-input confirms mt100 mw300></floating-input>
+		</section>
+
+		<section hidden=[[hadClients]]>
+			<ink-head1 ink-txt-c mt150>Congrats, Andreas! You met up with 2 clients this month.</ink-head1>
+			<div mt50>
+				<img src='/icon_happy.png' />
+				<icon-button icon='/icon_arrow.png' label='PLAN A MEETING' active></icon-button>
+			</div>
+		</section>
+
+	</template>
+	<script>
+		{
+			// import '@polymer/polymer/polymer-element.html';
+			// import '@startup-boilerplate/inkling/dist/inkling.html';
+			// import '../components/icon-button/icon-button.html';
+
+			System.import('@polymer/polymer/polymer-element.html');
+			System.import('@startup-boilerplate/inkling/dist/inkling.html');
+			System.import('../components/icon-button/icon-button.html');
+
+
+			// const baseUrl = 'node_modules/';
+			// Polymer.Utils.importHref(`${baseUrl}@startup-boilerplate/inkling/dist/inkling.html`);
+			// Polymer.Utils.importHref(`../components/icon-button/icon-button.html`);
+
+			class ClientsMonthlyView extends Polymer.Element {
+
+				static get is() { return 'clients-monthly-view'; }
+				static get config() {
+					return {
+						properties: {
+							hadClients: {
+								type: Boolean,
+								value: false
+							}
+						}
+					};
+				}
+
+
+				connectedCallback() {
+					super.connectedCallback();
+				}
+			}
+
+			customElements.define(ClientsMonthlyView.is, ClientsMonthlyView);
+		}
+	</script>
+</dom-module>
