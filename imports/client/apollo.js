@@ -18,7 +18,7 @@
 
 
 import ApolloClient, { createNetworkInterface, addTypename } from 'apollo-client';
-import { PolymerApollo } from 'polymer-apollo';
+import { PolymerApollo } from './polymer-apollo';
 
 // Create the apollo client
 const apolloClient = new ApolloClient({

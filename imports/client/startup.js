@@ -29,3 +29,7 @@ window.Polymer = {
 require('./apollo.js');
 require('@polymer/polymer/polymer.html');
 require('./views/_app-shell.html');
+
+
+// import './apollo.js';
+// import './views/_app-shell.html';
