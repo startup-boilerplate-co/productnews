@@ -316,6 +316,7 @@ export const PolymerApollo = (superclass, options) => class extends superclass {
 	// Start running apollo queries if onReady is set (if subscriptions weren't meant to be unsubscribed?)
 	//
   ready() {
+		super.ready();
     const apollo = this.apollo;
     if (apollo && apollo.onReady) {
       this.$apollo.attached = true;
