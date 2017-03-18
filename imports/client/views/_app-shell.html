@@ -1,4 +1,4 @@
-<dom-module id='app-shell'>
+<!-- <dom-module id='app-shell'>
 
   <template>
     <style>
@@ -30,15 +30,7 @@
       </template>
 
       <template is='iron-lazy-page' data-route='/clients-daily'>
-        <clients-daily-view first-name=[[firstName]]></clients-daily-view>
-      </template>
-
-      <template is='iron-lazy-page' data-route='/clients-monthly'>
-        <clients-monthly-view first-name=[[firstName]]></clients-monthly-view>
-      </template>
-
-      <template is='iron-lazy-page' data-route='/welcome'>
-        <welcome-view></welcome-view>
+        <stories-view></stories-view>
       </template>
 
     </iron-lazy-pages>
@@ -49,14 +41,12 @@
 </dom-module>
 
 <script>
-	console.log('rofl');
-
 	import gql from 'graphql-tag';
 	import '@polymer/polymer/polymer.html';
 
 	import '@polymer/app-route/app-route.html';
 	import '@polymer/app-route/app-location.html';
-	// import '@polymer/iron-lazy-pages/iron-lazy-pages.html';
+	import '@polymer/iron-lazy-pages/iron-lazy-pages.html';
 
 
 
@@ -73,36 +63,52 @@
 		    // Initialize your apollo data
 		    hello: String,
 		},
-		apollo: {
-			// Simple query that will update the 'hello' polymer property
-			hello: gql`{getStories}`,
-		},
+
+		// apollo: {
+		// 	query: {
+		// 		hello: gql`{getStories}`,
+		// 	}
+		// 	// Simple query that will update the 'hello' polymer property
+		// },
+		// apollo: {
+		// 	hello: gql`{gamona}`,
+		// },
 	  attached: function() {
 	  },
 	  changeRoute: function(e) {
 	    // tells route path where to go
 	    this.path = e.detail.path;
-
-	    // this updates intercom to load new messages, etc.
-	    // window.Intercom('update');
 	  },
 	  _loadViewDependency: function(path) {
-	    // require('./welcome-view.html');
-	    // require('./clients-daily-view.html');
-	    // require('./clients-monthly-view.html');
+	    require('./stories-view.html');
 
-
-	    // console.log(path);
-	    // console.log(`/imports/client/views/${path.page}-view.html`);
 	    // path.page === '' ? require(`/imports/client/views/welcome-view.html`) : require(`/imports/client/views/${path.page}-view.html`);
 	  }
+
+		// _loadViewDependency: function(path) {
+		// 	switch (path.page) {
+		// 		case 'stories-list':
+		// 			// this.loaded = false;
+		// 			import('./clients-daily-view.html').then(Component => {
+		// 				// this.loaded = true;
+		// 				console.log('imported');
+		// 				console.log(React);
+		// 			});
+		// 			break;
+		// 		case 'clients-monthly':
+		// 			this.loaded = false;
+		// 			import('./clients-monthly-view.html').then(React => {
+		// 				this.loaded = true;
+		// 				console.log('imported');
+		// 				console.log(React);
+		// 			});
+		// 	}
+
 	});
-</script>
+</script> -->
 
 
-
-
-<!-- <dom-module id='app-shell'>
+<dom-module id='app-shell'>
 	<template>
 
 		<style>
@@ -149,81 +155,37 @@
 	</template>
 
 	<script>
-		import gql from 'graphql-tag';
-		import '@polymer/polymer/polymer-element.html';
-		import '@polymer/app-route/app-route.html';
-		import '@polymer/app-route/app-location.html';
-		import '@polymer/iron-lazy-pages/iron-lazy-pages.html';
-		// import '../components/page-loader/page-loader.html';
+	import gql from 'graphql-tag';
+	import ApolloClient, { createNetworkInterface, addTypename } from 'apollo-client';
+	import { PolymerApolloBehavior } from '../polymer-apollo';
+	import ApolloClientOptions from '../apollo.js';
 
+	import '@polymer/polymer/polymer-element.html';
+	import '@polymer/app-route/app-route.html';
+	import '@polymer/app-route/app-location.html';
+	import '@polymer/iron-lazy-pages/iron-lazy-pages.html';
+	import '../components/page-loader/page-loader.html';
 
+	{
 
-		console.log('blubb');
-		//
-		// //
-		// // {
-		// // 	behaviors:[PolymerApolloBehavior],
-		// //
-		// //
-		// //
-		//
-			class AppShell extends Polymer.Element {
-				// apollo: {
-				// 	// Query with parameters
-				// 	github: {
-				// 		query: gql`query github($username: String!) {
-				// 			github(username: $username){
-				// 				avatar_url,
-				// 				html_url,
-				// 				name,
-				// 				public_repos
-				// 			}
-				// 		}`,
-				// 		variables: {
-				// 			username: 'username'
-				// 		},
-				// 		error(error){
-				// 			this.set("github",{});
-				// 			this.set("error",error.message);
-				// 		},
-				// 		loadingKey:"loading"
-				// 		// Additional options here
-				// 	},
-				// }
+		class AppShell extends PolymerApolloBehavior(Polymer.Element, ApolloClientOptions) {
 
-				static get is() { return 'app-shell'; }
-				static get properties() { return {
-					error:String,
-					username:{
-						type:String,
-						value:'aruntk',
-					},
-					loaded: {
-						type: Boolean,
-						value: false
+			static get is() { return 'app-shell'; }
+
+			static get properties() { return {
+				apollo: {
+					type: Object,
+					value: function() {
+						return {
+							// Query with parameters
+								hello: gql`{getStories}`
+						};
 					}
-				}; }
+				}
+			}; }
 				static get observers() { return [
 					'_loadViewDependency(data)'
 				]; }
-
-				connectedCallback() {
-					super.connectedCallback();
-
-					// this.addEventListener('route-selected', this.changeRoute());
-
-					import('raven-js').then((Raven) => {
-						console.log(Raven);
-						Raven.config('https://f5c1f4f041544c9c9917d0a340cfec3f@sentry.io/141676').install();
-						// try {
-						// 	addAlert("Welcome guest!");
-						// }
-						// catch(err) {
-						// 	Raven.captureException(err);
-						// 	Raven.showReportDialog();
-						// }
-					});
-				}
 
 				changeRoute(e) {
 					// tells route path where to go
@@ -233,20 +195,20 @@
 				_loadViewDependency(path) {
 					switch (path.page) {
 						case 'clients-daily':
-							this.loaded = false;
-							import('./clients-daily-view.html').then(React => {
-								this.loaded = true;
-								console.log('imported');
-								console.log(React);
+							// this.loaded = false;
+							// import('./clients-daily-view.html').then(React => {
+							// 	this.loaded = true;
+							// 	console.log('imported');
+							// 	console.log(React);
 							});
 							break;
 						case 'clients-monthly':
-							this.loaded = false;
-							import('./clients-monthly-view.html').then(React => {
-								this.loaded = true;
-								console.log('imported');
-								console.log(React);
-							});
+							// this.loaded = false;
+							// import('./clients-monthly-view.html').then(React => {
+							// 	this.loaded = true;
+							// 	console.log('imported');
+							// 	console.log(React);
+							// });
 					}
 				}
 			}
@@ -254,4 +216,4 @@
 			customElements.define(AppShell.is, AppShell);
 		}
 	</script>
-</dom-module> -->
+</dom-module>
