@@ -1,0 +1,87 @@
+<dom-module id='page-loader'>
+  <template>
+		<style>
+		:host {
+			position: fixed;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background: white;
+			transition: opacity 0.4s ease-in-out 0s;
+			opacity: 0;
+		}
+
+		:host(:not([loaded])) {
+			opacity: 1;
+		}
+
+
+		paper-spinner {
+			position: absolute;
+	    top: 50%;
+	    right: 50%;
+	    transform: translate(-50%, -50%);
+
+			--paper-spinner-stroke-width: 2px;
+			width: 40px;
+			height: 40px;
+		}
+		</style>
+		<paper-spinner active></paper-spinner>
+  </template>
+
+	<script>
+		import '@polymer/polymer/polymer-element.html';
+		import '@polymer/paper-spinner/paper-spinner.html';
+
+
+		{
+			class PageLoader extends Polymer.Element {
+
+				static get is() { return 'page-loader'; }
+				static get properties() { return {
+					/**
+					* `Boolean` Whether the loader is showing or not
+					*/
+					// value: Boolean,
+					loaded: {
+						type: Boolean,
+						value: false,
+						reflectToAttribute: true
+					}
+				}; }
+				static get observers() { return [
+					'stateChange(loaded)'
+				]; }
+
+				connectedCallback() {
+					super.connectedCallback();
+
+					// this.addEventListener('route-selected', this.changeRoute());
+				}
+
+				stateChange(e) {
+					console.log('state changed');
+					if(this.loaded) {
+						window.setTimeout( () => {
+							this.style.display = 'none';
+						}, 400);
+					} else {
+							this.style.display = 'block';
+					}
+				}
+
+			}
+
+			customElements.define(PageLoader.is, PageLoader);
+		}
+
+	/**
+	* Event fired when the user selects a suggestion
+	* @param {Object} event fired
+	*/
+	// _selectFirstSuggestion : function(e) {
+	// },
+	</script>
+</dom-module>

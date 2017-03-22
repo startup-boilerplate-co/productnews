@@ -1,3 +1,5 @@
+// import('@webcomponents/custom-elements/src/native-shim');
+
 // loads important startup stuff
 import '../imports/client/startup.js';
 

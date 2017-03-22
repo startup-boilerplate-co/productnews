@@ -155,65 +155,76 @@
 	</template>
 
 	<script>
-	import gql from 'graphql-tag';
-	import ApolloClient, { createNetworkInterface, addTypename } from 'apollo-client';
-	import { PolymerApolloBehavior } from '../polymer-apollo';
-	import ApolloClientOptions from '../apollo.js';
 
-	import '@polymer/polymer/polymer-element.html';
-	import '@polymer/app-route/app-route.html';
-	import '@polymer/app-route/app-location.html';
-	import '@polymer/iron-lazy-pages/iron-lazy-pages.html';
-	import '../components/page-loader/page-loader.html';
+		import gql from 'graphql-tag';
+		import ApolloClient, { createNetworkInterface, addTypename } from 'apollo-client';
+		import { PolymerApolloBehavior } from '../polymer-apollo';
+		import ApolloClientOptions from '../apollo';
 
-	{
+		import '@polymer/polymer/polymer-element.html';
+		import '@polymer/app-route/app-route.html';
+		import '@polymer/app-route/app-location.html';
+		import '@polymer/iron-lazy-pages/iron-lazy-pages.html';
+		import '../components/page-loader.html';
 
-		class AppShell extends PolymerApolloBehavior(Polymer.Element, ApolloClientOptions) {
+		console.log('app shell');
+	// {
+	//
+		class AppShell extends Polymer.Element {
+
+		// class AppShell extends PolymerApolloBehavior(Polymer.Element, ApolloClientOptions) {
 
 			static get is() { return 'app-shell'; }
+
 
 			static get properties() { return {
 				apollo: {
 					type: Object,
 					value: function() {
 						return {
-							// Query with parameters
-								hello: gql`{getStories}`
-						};
+							hello: gql`{getStories}`
+						}
 					}
+			// 		value: () => {
+			// 		}
 				}
 			}; }
-				static get observers() { return [
-					'_loadViewDependency(data)'
-				]; }
 
-				changeRoute(e) {
-					// tells route path where to go
-					this.path = e.detail.path;
-				}
 
-				_loadViewDependency(path) {
-					switch (path.page) {
-						case 'clients-daily':
-							// this.loaded = false;
-							// import('./clients-daily-view.html').then(React => {
-							// 	this.loaded = true;
-							// 	console.log('imported');
-							// 	console.log(React);
-							});
-							break;
-						case 'clients-monthly':
-							// this.loaded = false;
-							// import('./clients-monthly-view.html').then(React => {
-							// 	this.loaded = true;
-							// 	console.log('imported');
-							// 	console.log(React);
-							// });
-					}
+			static get observers() { return [
+				'_loadViewDependency(data)'
+			]; }
+
+
+			changeRoute(e) {
+				// tells route path where to go
+				this.path = e.detail.path;
+			}
+
+
+			_loadViewDependency(path) {
+				switch (path.page) {
+					case 'clients-daily':
+						// this.loaded = false;
+						// import('./clients-daily-view.html').then(React => {
+						// 	this.loaded = true;
+						// 	console.log('imported');
+						// 	console.log(React);
+						// });
+						break;
+					case 'clients-monthly':
+						// this.loaded = false;
+						// import('./clients-monthly-view.html').then(React => {
+						// 	this.loaded = true;
+						// 	console.log('imported');
+						// 	console.log(React);
+						// });
 				}
 			}
 
-			customElements.define(AppShell.is, AppShell);
 		}
+
+		customElements.define(AppShell.is, AppShell);
+	// 	}
 	</script>
 </dom-module>
